@@ -332,6 +332,7 @@ add_custom_target(check-clang-tidy-p2
 add_custom_target(submit-p2
         zip project2-submission.zip
         ${P2_FILES}
+        "docs/p2-design.md"
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
