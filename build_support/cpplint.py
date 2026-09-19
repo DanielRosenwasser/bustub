@@ -49,12 +49,17 @@ import itertools
 import math  # for log
 import os
 import re
-import sre_compile
 import string
 import sys
 import sysconfig
 import unicodedata
 import xml.etree.ElementTree
+
+try:
+  regex_compile = re._compile.compile
+except AttributeError:
+  import sre_compile
+  regex_compile = sre_compile.compile
 
 # if empty, use defaults
 _valid_extensions = set([])
@@ -800,7 +805,7 @@ def Match(pattern, s):
   # performance reasons; factoring it out into a separate function turns out
   # to be noticeably expensive.
   if pattern not in _regexp_compile_cache:
-    _regexp_compile_cache[pattern] = sre_compile.compile(pattern)
+    _regexp_compile_cache[pattern] = regex_compile(pattern)
   return _regexp_compile_cache[pattern].match(s)
 
 
@@ -818,14 +823,14 @@ def ReplaceAll(pattern, rep, s):
     string with replacements made (or original string if no replacements)
   """
   if pattern not in _regexp_compile_cache:
-    _regexp_compile_cache[pattern] = sre_compile.compile(pattern)
+    _regexp_compile_cache[pattern] = regex_compile(pattern)
   return _regexp_compile_cache[pattern].sub(rep, s)
 
 
 def Search(pattern, s):
   """Searches the string for the pattern, caching the compiled regexp."""
   if pattern not in _regexp_compile_cache:
-    _regexp_compile_cache[pattern] = sre_compile.compile(pattern)
+    _regexp_compile_cache[pattern] = regex_compile(pattern)
   return _regexp_compile_cache[pattern].search(s)
 
 
